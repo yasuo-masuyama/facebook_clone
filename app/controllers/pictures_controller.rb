@@ -1,5 +1,6 @@
 class PicturesController < ApplicationController
-  before_action :set_picture, only: %i[ show edit update destroy ]
+  before_action :set_picture, only: %i[show edit update destroy ]
+  skip_before_action :login_required
 
   def index
     @pictures = Picture.all
@@ -17,6 +18,7 @@ class PicturesController < ApplicationController
 
   def create
     @picture = Picture.new(picture_params)
+    @picture = current_user.pictures_build(picture_params)
 
     respond_to do |format|
       if @picture.save
@@ -27,6 +29,12 @@ class PicturesController < ApplicationController
         format.json { render json: @picture.errors, status: :unprocessable_entity }
       end
     end
+  end
+
+  def confirm
+    @picture = Picture.new(picture_params)
+    @picture = current_user.pictures_build(picture_params)
+    render :new if @picture.invalid?
   end
 
   def update
@@ -52,11 +60,11 @@ class PicturesController < ApplicationController
 
   private
 
-    def set_picture
-      @picture = Picture.find(params[:id])
-    end
+  def set_picture
+    @picture = Picture.find(params[:id])
+  end
 
-    def picture_params
-      params.require(:picture).permit(:title, :content, :image)
-    end
+  def picture_params
+    params.require(:picture).permit(:title, :content, :image, :image_cache)
+  end
 end
