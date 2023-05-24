@@ -19,7 +19,7 @@
         <td><%= picture.user.name %></td>
         <td><%= picture.title %></td>
         <td><%= picture.content %></td>
-        <td><%= picture.image %></td>
+        <td><%= image_tag(picture.image.url) if picture.image && picture.image.url %></td>
         <td><%= link_to '詳細', picture %></td>
         <td><%= link_to '編集', edit_picture_path(picture) %></td>
         <td><%= link_to '削除', picture, method: :delete, data: { confirm: 'Are you sure?' } %></td>
