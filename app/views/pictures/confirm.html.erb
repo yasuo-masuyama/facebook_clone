@@ -6,7 +6,9 @@
 
   <p>タイトル:<%= @picture.title %></p>
   <p>本文:<%= @picture.content %></p>
+  <p>画像:<%= image_tag(@picture.image.url, style: 'width: 200px; height: 180px;') if @picture.image && @picture.image.url %></p>
+  <%= form.file_field :image %>
+  <%= form.hidden_field :image_cache %>
   <%= form.submit  "登録する" %>
-
   <%= form.submit "戻る", name: 'back' %>
 <% end %>
